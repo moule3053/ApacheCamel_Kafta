@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans.xsd          
+http://camel.apache.org/schema/spring 
+http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+<bean id="service" class="com.kafka.service.ServiceImpl"/>
+	<camelContext xmlns="http://camel.apache.org/schema/spring">
+		<route id="kafka-topic-to-topic">
+			<from uri="kafka:localhost:9092?topic=test_topic&amp;zookeeperHost=localhost&amp;zookeeperPort=2181&amp;groupId=group1" />
+			<to uri="kafka:localhost:9092?topic=test_topic2&amp;zookeeperHost=localhost&amp;zookeeperPort=2181&amp;groupId=group1"/>	
+			<!-- <to uri="bean:service?method=displayMessage"/> -->
+			<log message="Started The Consumer Route" loggingLevel="INFO" />
+			<camel:log message="${body}" loggingLevel="INFO" />
+		</route>
+	</camelContext>
+</beans>
